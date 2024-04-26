@@ -1,4 +1,4 @@
-package com.acdm.restcountriescompose.ui.theme
+package com.acdm.restcountriescompose.presentation.ui.theme
 
 import android.app.Activity
 import android.os.Build

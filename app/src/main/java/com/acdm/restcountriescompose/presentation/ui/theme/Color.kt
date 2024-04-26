@@ -1,4 +1,4 @@
-package com.acdm.restcountriescompose.ui.theme
+package com.acdm.restcountriescompose.presentation.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
