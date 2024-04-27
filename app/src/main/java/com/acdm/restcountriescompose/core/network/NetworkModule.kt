@@ -1,4 +1,4 @@
-package com.acdm.restcountriescompose.core
+package com.acdm.restcountriescompose.core.network
 
 import com.acdm.restcountriescompose.core.data.ApiService
 import com.acdm.restcountriescompose.domain.Constans
