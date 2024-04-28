@@ -7,6 +7,6 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET(Constans.COUNTRIES)
-    suspend fun getCountries(): Countries
+    suspend fun getCountries(): List<Countries>
 
 }

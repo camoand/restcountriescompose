@@ -25,11 +25,8 @@ class DatabaseViewModel @Inject constructor(
 
     fun processIntent(intent: CountriesIntent) {
         when (intent) {
-         //   is CountriesIntent.FavCharacter -> saveCharacterFav(intent.charactersFav)
             is CountriesIntent.ReadDatabase -> readInDatabase()
-           // is CountriesIntent.ReadDatabaseFavotite -> readInDatabaseFavorite()
             is CountriesIntent.SaveDatabase -> saveDatabase(intent.countries)
-          //  is CountriesIntent.noFavCharacter -> deleteCharacterFav(intent.charactersFav)
             else -> {}
         }
 
@@ -39,7 +36,7 @@ class DatabaseViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val response: List<Countries> = listOf(countries)
             try {
-                insertFromApi.invoke(response.map { it.toDomainChaAttFromApi() })
+                insertFromApi.invoke(response.map {it.toDomainChaAttFromApi()})
                 _stateDatabase.value = _stateDatabase.value.copy(isSuccessInDatabase = true)
             } catch (e: Exception) {
                 _stateDatabase.value = _stateDatabase.value.copy(isSuccessInDatabase = false)
@@ -55,7 +52,6 @@ class DatabaseViewModel @Inject constructor(
                 if (response.isNotEmpty()) {
                     _stateDatabase.value = _stateDatabase.value.copy(
                         isGetInDatabase = true,
-                        isGetInDatabaseFavorite = false,
                         countriesGetDatabase = response
                     )
                 }

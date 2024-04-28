@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class GetServiceApi @Inject constructor(private val apiService: ApiService) {
 
-    suspend fun getServiceApi(): Countries {
+    suspend fun getServiceApi(): List<Countries> {
         return withContext(Dispatchers.IO){
             val response = apiService.getCountries()
             response

@@ -6,7 +6,7 @@ import javax.inject.Inject
 
 class ApiUseCase @Inject constructor(private val repository: ApiRepository) {
 
-    suspend operator fun invoke(): Countries {
+    suspend operator fun invoke(): List<Countries> {
         return repository.getApi()
     }
 
