@@ -31,5 +31,7 @@ Esta estructura de directorios propuesta sigue los principios de separación de 
 
 ###Images
 
-
+![](https://github.com/camoand/restcountriescompose/blob/master/Img/Screenshot_1.png)
+![](https://github.com/camoand/restcountriescompose/blob/master/Img/Screenshot_2.png)
+![](https://github.com/camoand/restcountriescompose/blob/master/Img/Screenshot_3.png)
 
