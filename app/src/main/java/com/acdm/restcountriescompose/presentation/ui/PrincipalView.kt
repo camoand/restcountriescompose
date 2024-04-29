@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.acdm.restcountriescompose.core.database.entity.CountriesFromApiEntity
+import com.acdm.restcountriescompose.core.model.Routes
 import com.acdm.restcountriescompose.domain.state.DatabaseState
 import com.acdm.restcountriescompose.presentation.intent.CountriesIntent
 import com.acdm.restcountriescompose.presentation.viewmodel.ApiViewModel
@@ -56,95 +57,99 @@ fun ContentPrincipalView(
             CircularProgressIndicator(Modifier.size(50.dp))
         }
     } else if (countriesStates.countries != null) {
-        for (i in countriesStates.countries?.indices!!)
-            databaseViewModel.processIntent(CountriesIntent.SaveDatabase(countriesStates.countries!![i]))
-        Box(modifier = Modifier
-            .fillMaxSize()
-            .semantics { isTraversalGroup = true }
-        ) {
-
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(8.dp)
-            ) {
-                LazyVerticalGrid(columns = GridCells.Fixed(1),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp),
-                    content = {
-                        databaseViewModel.processIntent(CountriesIntent.ReadDatabase)
-                        if (countriesDatabaseState.isGetInDatabase) {
-                            items(countriesDatabaseState.countriesGetDatabase!!.size) {
-                                ItemCharacter(
-                                    countriesDatabaseState.countriesGetDatabase!![it],
-                                    it,
-                                    navController,
-                                    databaseViewModel,
-                                    countriesDatabaseState
-                                )
-                            }
-                        }
-                        /*if (!charactersDatabaseStates.isGetInDatabaseFavorite)
-                            databaseViewModel.processIntent(CharacterIntent.ReadDatabase)
-                        if (charactersDatabaseStates.isGetInDatabase) {
-                            items(charactersDatabaseStates.characterGetDatabase!!.size) {
-                                ItemCharacter(
-                                    charactersDatabaseStates.characterGetDatabase!![it],
-                                    it,
-                                    navController,
-                                    databaseViewModel,
-                                    charactersDatabaseStates
-                                )
-                            }
-                        } else if (charactersDatabaseStates.isGetInDatabaseFavorite) {
-                            items(charactersDatabaseStates.characterGetDatabaseFavorite!!.size) {
-                                ItemCharacter(
-                                    charactersDatabaseStates.characterGetDatabaseFavorite!!.map { it.toDomainChaAttFavorite() }[it],
-                                    it,
-                                    navController,
-                                    databaseViewModel,
-                                    charactersDatabaseStates
-                                )
-                            }
-                        }*/
-                    })
-            }
-        }
+        if (!countriesDatabaseState.isSuccessInDatabase)
+            for (i in countriesStates.countries?.indices!!)
+                databaseViewModel.processIntent(CountriesIntent.SaveDatabase(countriesStates.countries!![i]))
+        ViewBoxCountries(
+            databaseViewModel = databaseViewModel,
+            countriesDatabaseState = countriesDatabaseState,
+            navController = navController
+        )
     } else {
-        FetchCountriesButton(apiViewModel)
+        databaseViewModel.processIntent(CountriesIntent.ReadDatabase)
+        if (countriesDatabaseState.isGetInDatabase)
+            ViewBoxCountries(
+                databaseViewModel = databaseViewModel,
+                countriesDatabaseState = countriesDatabaseState,
+                navController = navController
+            )
+        else
+            FetchCountriesButton(apiViewModel)
     }
+
     LaunchedEffect(false) {
-        apiViewModel.processIntent(CountriesIntent.FetchCountries)
+        if (!countriesDatabaseState.isSearch)
+            apiViewModel.processIntent(CountriesIntent.FetchCountries)
     }
 }
 
 @Composable
-fun ItemCharacter(
-    countriesFromApiEntity: CountriesFromApiEntity,
-    position: Int,
-    navController: NavHostController,
+fun ViewBoxCountries(
     databaseViewModel: DatabaseViewModel,
-    charactersDatabaseStates: DatabaseState
+    countriesDatabaseState: DatabaseState,
+    navController: NavHostController
+) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .semantics { isTraversalGroup = true }
+    ) {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+        ) {
+            LazyVerticalGrid(columns = GridCells.Fixed(1),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                content = {
+                    databaseViewModel.processIntent(CountriesIntent.ReadDatabase)
+                    if (countriesDatabaseState.isGetInDatabase) {
+                        if (countriesDatabaseState.countriesGetSearchDatabase != null){
+                            items(countriesDatabaseState.countriesGetSearchDatabase.size) {
+                                ItemCountries(
+                                    countriesFromApiEntity = countriesDatabaseState.countriesGetSearchDatabase[it],
+                                    navController = navController
+                                )
+                            }
+                        }else{
+                            items(countriesDatabaseState.countriesGetDatabase!!.size) {
+                                ItemCountries(
+                                    countriesFromApiEntity = countriesDatabaseState.countriesGetDatabase[it],
+                                    navController = navController
+                                )
+                            }
+                        }
+                    }
+                })
+        }
+    }
+}
+
+
+@Composable
+fun ItemCountries(
+    countriesFromApiEntity: CountriesFromApiEntity,
+    navController: NavHostController
 ) {
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Box {
             Card(shape = MaterialTheme.shapes.medium, modifier = Modifier
                 .clickable {
-                   /* navController.navigate(Routes.Pantalla2.createRoute(position)) {
+                    navController.navigate(Routes.Screen2.createRoute(countriesFromApiEntity.id -1 )) {
                         popUpTo(
-                            Routes.Pantalla2.createRoute(
-                                position
+                            Routes.Screen2.createRoute(
+                                countriesFromApiEntity.id - 1
                             )
                         ) {
                             inclusive = false
                         }
-                    }*/
+                    }
                 }
                 .height(200.dp)
                 .width(300.dp)) {
                 AsyncImage(
                     model = countriesFromApiEntity.flags,
-                    contentDescription = "photoCharacter",
+                    contentDescription = "photoCountries",
                     contentScale = ContentScale.FillHeight,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -163,7 +168,7 @@ fun ItemCharacter(
 
 @Composable
 fun FetchCountriesButton(apiViewModel: ApiViewModel) {
-    val charactersStates by apiViewModel.state.collectAsState()
+    val countriesStates by apiViewModel.state.collectAsState()
 
     Column(
         Modifier
@@ -172,7 +177,7 @@ fun FetchCountriesButton(apiViewModel: ApiViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(text = "Error: " + charactersStates.error, textAlign = TextAlign.Center)
+        Text(text = "Error: " + countriesStates.error, textAlign = TextAlign.Center)
         Spacer(modifier = Modifier.padding(8.dp))
         Button(onClick = { apiViewModel.processIntent(CountriesIntent.FetchCountries) }) {
             Text(text = "Volver a cargar")

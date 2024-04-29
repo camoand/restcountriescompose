@@ -1,4 +1,4 @@
-package com.acdm.restcountriescompose.domain.usecase
+package com.acdm.restcountriescompose.domain.usecase.database
 
 import com.acdm.restcountriescompose.core.DatabaseRepository
 import com.acdm.restcountriescompose.core.database.entity.CountriesFromApiEntity

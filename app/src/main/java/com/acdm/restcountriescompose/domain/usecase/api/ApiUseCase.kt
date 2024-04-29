@@ -1,4 +1,4 @@
-package com.acdm.restcountriescompose.domain.usecase
+package com.acdm.restcountriescompose.domain.usecase.api
 
 import com.acdm.restcountriescompose.core.ApiRepository
 import com.acdm.restcountriescompose.core.model.Countries

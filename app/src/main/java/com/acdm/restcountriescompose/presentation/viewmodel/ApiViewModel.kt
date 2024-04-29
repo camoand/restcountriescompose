@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.acdm.restcountriescompose.domain.Constans
 import com.acdm.restcountriescompose.domain.state.ApiState
-import com.acdm.restcountriescompose.domain.usecase.ApiUseCase
+import com.acdm.restcountriescompose.domain.usecase.api.ApiUseCase
 import com.acdm.restcountriescompose.presentation.intent.CountriesIntent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ApiViewModel @Inject() constructor(
-    private val apiUseCase: ApiUseCase
+    private val apiUseCase: ApiUseCase,
 ) : ViewModel(){
     private val _state = MutableStateFlow(ApiState())
     val state: StateFlow<ApiState> = _state
@@ -26,7 +26,7 @@ class ApiViewModel @Inject() constructor(
         }
     }
 
-    fun fetchCountries() {
+    private fun fetchCountries() {
         viewModelScope.launch {
             _state.value = _state.value.copy(isLoadingApi = true)
             try {
@@ -40,6 +40,5 @@ class ApiViewModel @Inject() constructor(
             }
         }
     }
-
 
 }

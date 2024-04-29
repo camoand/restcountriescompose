@@ -7,5 +7,6 @@ object Constans {
     const val ERROR_MESSAGE = "Error al acceder al recurso"
     const val COUNTRIES = "all"
     const val UNKNOWN_ERROR = "error desconocido"
+    const val ID = "id"
 
 }

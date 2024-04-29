@@ -7,9 +7,10 @@ import com.acdm.restcountriescompose.domain.Constans
 data class DatabaseState(
     val isSuccessInDatabase: Boolean = false,
     val isGetInDatabase: Boolean = false,
-    val characterInsertDatabase: Countries? = null,
+    val countriesInsertDatabase: Countries? = null,
     val countriesGetDatabase: List<CountriesFromApiEntity>? = null,
-    //val characterGetDatabaseFavorite: List<CharactersAttributesEntity>? = null,
+    val countriesGetSearchDatabase: List<CountriesFromApiEntity>? = null,
+    val isSearch: Boolean = false,
     val error: String = Constans.ERROR_MESSAGE
 
 )

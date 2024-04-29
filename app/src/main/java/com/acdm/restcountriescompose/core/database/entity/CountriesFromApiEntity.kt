@@ -11,6 +11,8 @@ data class CountriesFromApiEntity(
     val capital: String,
     val region: String,
     val subregion: String,
-   // val languages: String,
+    val borders: String,
+    val area: String,
     val flags: String,
+    val population: String
 )

@@ -7,8 +7,10 @@ data class Countries(
     val capital: List<String>,
     val region: String,
     val subregion: String,
-    //val languages: HashMap<String, String>,
+    val borders: List<String>,
+    val area: String,
     val flags: FlagsCountries,
+    val population: String
 )
 
 fun Countries.toDomainChaAttFromApi() = CountriesFromApiEntity(
@@ -17,5 +19,8 @@ fun Countries.toDomainChaAttFromApi() = CountriesFromApiEntity(
     capital = capital[0],
     region = region,
     subregion = subregion,
-    flags = flags.png
+    borders = borders.joinToString(),
+    area = area,
+    flags = flags.png,
+    population = population
 )

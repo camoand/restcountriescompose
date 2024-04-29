@@ -5,15 +5,19 @@ import com.acdm.restcountriescompose.core.database.entity.CountriesFromApiEntity
 import javax.inject.Inject
 
 class DatabaseRepository @Inject constructor(
-    private val characterFromApiDAO: CountriesFromApiDAO
+    private val countriesFromApiDAO: CountriesFromApiDAO
 ) {
 
-    fun setDatabaseFromApi(charactersFromApiEntity: List<CountriesFromApiEntity>){
-        return characterFromApiDAO.addCountriesFromApi(charactersFromApiEntity)
+    fun setDatabaseFromApi(countriesFromApiEntity: List<CountriesFromApiEntity>){
+        return countriesFromApiDAO.addCountriesFromApi(countriesFromApiEntity)
     }
 
     fun getDatabaseCountriesFromApi(): List<CountriesFromApiEntity>{
-        return characterFromApiDAO.getCountriesDatabase()
+        return countriesFromApiDAO.getCountriesDatabase()
+    }
+
+    fun getDatabaseSearchCountries(idCountries: String): List<CountriesFromApiEntity>{
+        return countriesFromApiDAO.getSearchCountries(idCountries)
     }
 
 }

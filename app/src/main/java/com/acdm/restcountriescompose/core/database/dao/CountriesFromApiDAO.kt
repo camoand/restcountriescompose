@@ -16,4 +16,6 @@ interface CountriesFromApiDAO {
     @Query("SELECT * FROM CountriesFromApiEntity")
     fun  getCountriesDatabase() : MutableList<CountriesFromApiEntity>
 
+    @Query("SELECT * FROM CountriesFromApiEntity WHERE name LIKE :idCountries || '%' ")
+    fun getSearchCountries(idCountries: String) : MutableList<CountriesFromApiEntity>
 }
